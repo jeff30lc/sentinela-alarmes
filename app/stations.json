@@ -1,0 +1,318 @@
+[
+  {
+    "code": "ABT",
+    "name": "Abidom Batista"
+  },
+  {
+    "code": "ANA",
+    "name": "Anastacio"
+  },
+  {
+    "code": "ARE",
+    "name": "Areias"
+  },
+  {
+    "code": "ASS",
+    "name": "Assis"
+  },
+  {
+    "code": "ATL2",
+    "name": "Atlantida 2"
+  },
+  {
+    "code": "BIG",
+    "name": "Biguaçu"
+  },
+  {
+    "code": "BLU",
+    "name": "Blumenau"
+  },
+  {
+    "code": "CAM3",
+    "name": "Camaqua 3"
+  },
+  {
+    "code": "CAN",
+    "name": "Canoinhas"
+  },
+  {
+    "code": "CAX",
+    "name": "Caxias"
+  },
+  {
+    "code": "CAX5",
+    "name": "Caxias 5"
+  },
+  {
+    "code": "CAX6",
+    "name": "Caxias 6"
+  },
+  {
+    "code": "CBA",
+    "name": "Curitiba"
+  },
+  {
+    "code": "CGR",
+    "name": "Campo Grande"
+  },
+  {
+    "code": "CHA",
+    "name": "Charqueadas"
+  },
+  {
+    "code": "CMO",
+    "name": "Campo Mourão"
+  },
+  {
+    "code": "CNO",
+    "name": "Campos Novos"
+  },
+  {
+    "code": "CTA",
+    "name": "Candiota"
+  },
+  {
+    "code": "CVO",
+    "name": "Cascavel Oeste"
+  },
+  {
+    "code": "DRO",
+    "name": "Desterro"
+  },
+  {
+    "code": "DOU",
+    "name": "Dourados"
+  },
+  {
+    "code": "FAR",
+    "name": "Farropilha"
+  },
+  {
+    "code": "FCO",
+    "name": "Foz de Chapeco"
+  },
+  {
+    "code": "FHA",
+    "name": "Forquilhinhas"
+  },
+  {
+    "code": "GAR1",
+    "name": "Garibaldi 1"
+  },
+  {
+    "code": "GAS2",
+    "name": "Gaspar 2"
+  },
+  {
+    "code": "GRA",
+    "name": "Gravatai"
+  },
+  {
+    "code": "GRA2",
+    "name": "Gravatai 2"
+  },
+  {
+    "code": "GRA3",
+    "name": "Gravatai 3"
+  },
+  {
+    "code": "GRT",
+    "name": "Guarita"
+  },
+  {
+    "code": "GUA",
+    "name": "Guaira"
+  },
+  {
+    "code": "GUA3",
+    "name": "Guaiba 3"
+  },
+  {
+    "code": "GUO",
+    "name": "Guarapuava Oeste"
+  },
+  {
+    "code": "IJU2",
+    "name": "Ijui 2"
+  },
+  {
+    "code": "IRN",
+    "name": "Irati Norte"
+  },
+  {
+    "code": "ITJ",
+    "name": "Itajai"
+  },
+  {
+    "code": "IVI2",
+    "name": "Iviana 2"
+  },
+  {
+    "code": "IVP",
+    "name": "Ivaporam"
+  },
+  {
+    "code": "JLA",
+    "name": "Jorge Lacerda A"
+  },
+  {
+    "code": "JLB",
+    "name": "Jorge Lacerda B"
+  },
+  {
+    "code": "JOI",
+    "name": "Joinvile"
+  },
+  {
+    "code": "JNO",
+    "name": "Joinvile Norte"
+  },
+  {
+    "code": "LNA",
+    "name": "Londrina (Copel)"
+  },
+  {
+    "code": "LNS",
+    "name": "Londrina Sul"
+  },
+  {
+    "code": "LON",
+    "name": "Londrina"
+  },
+  {
+    "code": "LGR",
+    "name": "Lageado Grande"
+  },
+  {
+    "code": "MBR",
+    "name": "Mançabara"
+  },
+  {
+    "code": "MBR3",
+    "name": "Mançabara 3"
+  },
+  {
+    "code": "MCH",
+    "name": "Machadinho"
+  },
+  {
+    "code": "MCL",
+    "name": "Monte Claro"
+  },
+  {
+    "code": "MIM",
+    "name": "Mimoso"
+  },
+  {
+    "code": "MIM2",
+    "name": "Mimoso 2"
+  },
+  {
+    "code": "MIS",
+    "name": "Missões"
+  },
+  {
+    "code": "MRO2",
+    "name": "Marmeleiro 2"
+  },
+  {
+    "code": "NPE",
+    "name": "Nova Petropolis 2"
+  },
+  {
+    "code": "NSR",
+    "name": "Nova Santa Rita"
+  },
+  {
+    "code": "NPR2",
+    "name": "Nova Prata 2"
+  },
+  {
+    "code": "OSO2",
+    "name": "Ossorio 2"
+  },
+  {
+    "code": "PAL",
+    "name": "Palhoça"
+  },
+  {
+    "code": "PFU",
+    "name": "Passo Fundo"
+  },
+  {
+    "code": "PGR",
+    "name": "Ponta Grossa"
+  },
+  {
+    "code": "PIN2",
+    "name": "Pinhausinho 2"
+  },
+  {
+    "code": "PME",
+    "name": "Presidente Médice"
+  },
+  {
+    "code": "PNO",
+    "name": "Povo Novo"
+  },
+  {
+    "code": "QUI",
+    "name": "Quinta"
+  },
+  {
+    "code": "SCR1",
+    "name": "Santa Cruz"
+  },
+  {
+    "code": "SDI",
+    "name": "Sarandi"
+  },
+  {
+    "code": "SEDE",
+    "name": "Sede Florianópolis"
+  },
+  {
+    "code": "SID",
+    "name": "Siderópolis"
+  },
+  {
+    "code": "SMA3",
+    "name": "Santa Maria 3"
+  },
+  {
+    "code": "SOS",
+    "name": "Salto Ósorio"
+  },
+  {
+    "code": "SPA2",
+    "name": "Santa Vitória do Palmar II"
+  },
+  {
+    "code": "SSA",
+    "name": "Salto Santiago"
+  },
+  {
+    "code": "STA",
+    "name": "Santo Ângelo"
+  },
+  {
+    "code": "TPR2",
+    "name": "Tapera 2"
+  },
+  {
+    "code": "VIN",
+    "name": "Vinhedos"
+  },
+  {
+    "code": "VMT",
+    "name": "Vila Maria Transmissão"
+  },
+  {
+    "code": "XAN",
+    "name": "Xanxêre"
+  },
+  {
+    "code": "YTA",
+    "name": "Itá"
+  }
+]
