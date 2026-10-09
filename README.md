@@ -20,6 +20,10 @@ Na publicação privada, autentique-se pelo ChatGPT e cadastre o primeiro admini
 
 O sistema registra a comunicação entre as equipes. A Vigitec realiza a ativação e a desativação física dos alarmes; não há integração automática com centrais físicas, e-mail ou WhatsApp.
 
+## Publicar na Netlify
+
+A versão Netlify usa interface React/Vite, Netlify Functions e Postgres. O build, a função e as migrações estão configurados no repositório. Consulte o [passo a passo de publicação](NETLIFY.md), incluindo a chave para criar o primeiro administrador.
+
 ## Executar localmente
 
 Requisitos: Node.js >=22.13 e npm.
@@ -35,9 +39,10 @@ Aplique cada migração local uma única vez. A prévia normalmente abre em `htt
 
 ## Tecnologia e estrutura
 
-React, TypeScript e Vinext, executados em Cloudflare Workers, com persistência Cloudflare D1 e migrações Drizzle.
+React e TypeScript, com duas configurações de implantação: Sites/Vinext em Cloudflare Workers com D1, e Netlify/Vite com Netlify Functions e Postgres.
 
-- `app/`: interface, autenticação e API.
+- `app/`: interface, autenticação e API compartilhadas.
+- `netlify/`, `netlify.toml` e `vite.netlify.config.ts`: função, banco e build para Netlify.
 - `app/stations.json`: instalações fornecidas para o projeto.
 - `db/` e `drizzle/`: modelo e migrações do banco.
 - `scripts/verify-flow.mjs`: 59 verificações de integração na prévia local com banco vazio.

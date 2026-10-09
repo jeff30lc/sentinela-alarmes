@@ -47,3 +47,7 @@ No Windows, caso o shim do npm não encontre sua instalação, execute seu `npm-
 `node scripts/verify-flow.mjs` testa uma prévia local em `127.0.0.1:5173` com banco vazio, criando dados exclusivamente de teste. Inclui 59 verificações de autenticação, perfis, as 79 instalações, os dois fluxos, estados pendentes, proteção contra duplicação, impedimento da própria confirmação, logs com datas, sessões revogadas, CSRF e limite de login. Não execute contra dados operacionais.
 
 Verificados também a compilação TypeScript, o build de produção e a interação visual com solicitação e confirmação em demonstração.
+
+## Publicação na Netlify
+
+Para usar a hospedagem Netlify com login direto, siga [NETLIFY.md](NETLIFY.md). Essa versão utiliza Postgres e migrações próprias. As regras operacionais, os perfis e os logs são compartilhados com a implementação original; os bancos de cada publicação são independentes.

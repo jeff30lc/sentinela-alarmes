@@ -1,13 +1,15 @@
 // Integration checks run only against the disposable, local preview database.
 import assert from 'node:assert/strict';
-const base='http://127.0.0.1:5173/api/';
+const testOrigin=process.env.SENTINELA_TEST_ORIGIN??'http://127.0.0.1:5173';
+if(!/^http:\/\/(127\.0\.0\.1|localhost):\d+$/.test(testOrigin))throw new Error('Tests require a disposable local database.');
+const base=testOrigin+'/api/';
 const password='Local-test-'+crypto.randomUUID();
 const suffix=Date.now().toString(36);
 const users={admin:'qa.admin.'+suffix,operator:'qa.operator.'+suffix,vigilance:'qa.vigitec.'+suffix};
 const cookies={};
 let checks=0;
 async function call(path,body,who,expected=200,custom={}){
- const headers={...(body?{'Content-Type':'application/json','X-App-Request':'sentinela',Origin:'http://127.0.0.1:5173'}:{}),...(cookies[who]?{Cookie:cookies[who]}:{}),...custom};
+ const headers={...(body?{'Content-Type':'application/json','X-App-Request':'sentinela',Origin:testOrigin}:{}),...(cookies[who]?{Cookie:cookies[who]}:{}),...custom};
  const r=await fetch(base+path,{method:body?'POST':'GET',headers,body:body?JSON.stringify(body):undefined});
  const text=await r.text();let d;try{d=JSON.parse(text);}catch{d={error:text};}assert.equal(r.status,expected,`${path}: ${JSON.stringify(d)}`);checks++;
  if(r.headers.get('set-cookie')) cookies[who]=r.headers.get('set-cookie').split(';')[0];return d;
@@ -15,7 +17,7 @@ async function call(path,body,who,expected=200,custom={}){
 const session=await call('session');
 assert.equal(session.initialized,false,'Use a new local preview database for this test.');
 await call('data',null,null,401);
-await call('setup',{name:'QA Administrator',username:users.admin,password},'admin');
+await call('setup',{name:'QA Administrator',username:users.admin,password,setupToken:process.env.SENTINELA_TEST_SETUP_TOKEN},'admin');
 await call('setup',{name:'Other Admin',username:'another.admin',password},null,409);
 await call('login',{username:users.admin,password},'admin');
 await call('users',{name:'QA AXIA SUL',username:users.operator,password,role:'operator',active:true},'admin');
