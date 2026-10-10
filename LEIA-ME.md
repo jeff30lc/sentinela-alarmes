@@ -14,7 +14,7 @@ Aplicativo web de gestão de alarmes patrimoniais com as 79 instalações do arq
 
 - **Operador AXIA SUL:** consulta instalações, solicita ativação ou desativação e acompanha os logs.
 - **Vigilância Vigitec:** consulta pedidos, executa a ação no sistema de alarme e registra a confirmação.
-- **Administrador:** gerencia contas e possui acesso operacional. Não pode confirmar a própria solicitação.
+- **Administrador:** gerencia contas, solicita e confirma ações, inclusive solicitações que ele mesmo abriu. A confirmação deve ocorrer após a execução física pela Vigitec; solicitante, confirmador, datas e horários permanecem registrados.
 
 Verde indica **Ativado** e vermelho **Desativado**. Solicitações de ativação alternam verde e verde claro; solicitações de desativação alternam vermelho e vermelho claro. Há indicação textual em todos os estados. A preferência de movimento reduzido substitui a animação por uma borda destacada.
 
@@ -44,7 +44,7 @@ No Windows, caso o shim do npm não encontre sua instalação, execute seu `npm-
 
 ## Verificação
 
-`node scripts/verify-flow.mjs` testa uma prévia local em `127.0.0.1:5173` com banco vazio, criando dados exclusivamente de teste. Inclui 59 verificações de autenticação, perfis, as 79 instalações, os dois fluxos, estados pendentes, proteção contra duplicação, impedimento da própria confirmação, logs com datas, sessões revogadas, CSRF e limite de login. Não execute contra dados operacionais.
+`node scripts/verify-flow.mjs` testa uma prévia local em `127.0.0.1:5173` com banco vazio, criando dados exclusivamente de teste. Inclui verificações de autenticação, perfis, as 79 instalações, os dois fluxos, estados pendentes, proteção contra duplicação, confirmação pelo próprio administrador e de pedidos de operadores, logs com datas, sessões revogadas, CSRF e limite de login. Não execute contra dados operacionais.
 
 Verificados também a compilação TypeScript, o build de produção e a interação visual com solicitação e confirmação em demonstração.
 

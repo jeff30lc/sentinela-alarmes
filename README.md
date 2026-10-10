@@ -10,7 +10,7 @@ Aplicação web para gerenciar solicitações de ativação e desativação de a
 - Verde: ativado; vermelho: desativado; blocos piscantes: ativação ou desativação solicitada, aguardando confirmação.
 - Operadores AXIA SUL solicitam; usuários Vigitec confirmam a execução.
 - Autenticação por usuário e senha, administração de contas e três perfis de acesso.
-- Solicitação e confirmação por usuários diferentes, com proteção contra pedidos duplicados e alterações concorrentes.
+- Operadores solicitam; a Vigitec ou um administrador confirma. Administradores também podem confirmar as próprias solicitações. Proteção contra pedidos duplicados e alterações concorrentes.
 - Histórico com responsáveis, datas e horários de Brasília, filtros e exportação CSV.
 - Demonstração com dados ilustrativos separados dos registros reais.
 
