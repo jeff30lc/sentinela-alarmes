@@ -24,6 +24,10 @@ O sistema registra a comunicação entre as equipes. A Vigitec realiza a ativaç
 
 A versão Netlify usa interface React/Vite, Netlify Functions e Postgres. O build, a função e as migrações estão configurados no repositório. Consulte o [passo a passo de publicação](NETLIFY.md), incluindo a chave para criar o primeiro administrador.
 
+## Publicar na Hostinger
+
+A versão Hostinger usa Node.js/Express e MySQL persistente. Consulte [HOSTINGER.md](HOSTINGER.md) para preparar o pacote, configurar o banco e cadastrar o primeiro administrador.
+
 ## Executar localmente
 
 Requisitos: Node.js >=22.13 e npm.
@@ -49,3 +53,7 @@ React e TypeScript, com duas configurações de implantação: Sites/Vinext em C
 - `.openai/hosting.json`: configuração da publicação Sites.
 
 Dependências instaladas, builds, banco local, sessões e arquivos temporários ficam fora do Git. Credenciais não devem ser adicionadas ao repositório.
+
+## Recuperação de senha
+
+O login possui **Esqueci minha senha**. Cada usuário cadastra seu endereço em **E-mail de recuperação**, confirmando a senha atual. Links expiram após 15 minutos, são de uso único e encerram as sessões anteriores. Consulte [RECUPERACAO-SENHA.md](RECUPERACAO-SENHA.md) para habilitar o envio pela Hostinger.

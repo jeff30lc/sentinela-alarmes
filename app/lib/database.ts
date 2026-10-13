@@ -20,4 +20,5 @@ export interface HandlerOptions {
   requireSetupToken?: boolean;
   setupToken?: string;
   clientIP?: string;
+  recovery?: { origin: string; send: (message: { to: string; url: string }) => Promise<void> };
 }

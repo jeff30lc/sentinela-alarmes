@@ -1,5 +1,6 @@
 import { getConnectionString } from '@netlify/database';
 import pg from 'pg';
+import { createRecoveryDelivery } from '../../hostinger/mail';
 import { createHandler } from '../../app/lib/server';
 import { PostgresDatabase } from '../lib/postgres';
 
@@ -14,6 +15,7 @@ export default async function api(request: Request, context: { ip?: string } = {
     database.pool.on('error', error => console.error('Sentinela idle database connection', { code: (error as any).code ?? 'connection' }));
     }
     return await createHandler(database, {
+      recovery:createRecoveryDelivery({...process.env,APP_ORIGIN:process.env.APP_ORIGIN||process.env.URL}),
       requireSetupToken: true,
       setupToken: process.env.SENTINELA_SETUP_TOKEN,
       // A trusted function context supplies the client IP.

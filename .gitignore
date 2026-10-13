@@ -58,3 +58,5 @@ next-env.d.ts
 
 # Netlify local state and database
 /.netlify/
+
+/hostinger/node_modules/

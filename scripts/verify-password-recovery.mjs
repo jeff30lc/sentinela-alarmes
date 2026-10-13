@@ -1,0 +1,43 @@
+import assert from 'node:assert/strict';
+export async function verifyPasswordRecovery(database,createHandler){
+ let checks=0;const mail=[];let deliveryFails=false;const origin='https://sentinela-test.example';const password=crypto.randomUUID(),newPassword=crypto.randomUUID();let ip='recovery-test';
+ const options=()=>({clientIP:ip,recovery:{origin,send:async message=>{if(deliveryFails)throw new Error('Test mail failure');mail.push(message);}}});
+ async function call(path,body,cookie,expected=200,custom={}){const response=await createHandler(database,options())(new Request(origin+'/api/'+path,{method:body?'POST':'GET',headers:{...(body?{'Content-Type':'application/json','X-App-Request':'sentinela',Origin:origin}:{}),...(cookie?{Cookie:cookie}:{}),...custom},body:body?JSON.stringify(body):undefined}));assert.equal(response.status,expected,path+': '+await response.clone().text());checks++;return {response,data:await response.json(),cookie:response.headers.get('set-cookie')?.split(';')[0]};}
+ const execute=(sql,...values)=>database.prepare(sql).bind(...values).run();
+ const clearLimits=()=>execute('DELETE FROM login_attempts');
+ const token=()=>new URLSearchParams(new URL(mail.at(-1).url).hash.slice(1)).get('reset');
+ await call('setup',{name:'Recovery Administrator',username:'recovery.admin',password,email:'admin@example.test'});
+ const admin=(await call('login',{username:'recovery.admin',password})).cookie;
+ await call('users',{name:'Recovery Operator',username:'recovery.operator',password,role:'operator',email:'operator@example.test'},admin);
+ const operator=(await call('login',{username:'recovery.operator',password})).cookie;
+ const session=(await call('session',undefined,operator)).data;assert.equal(session.user.email,'operator@example.test');assert.equal(session.recoveryAvailable,true);checks+=2;
+ await execute('DELETE FROM user_recovery WHERE user_id=?',session.user.id);assert.equal((await call('session',undefined,operator)).data.user.email,null);checks++;
+ await call('recovery-email',{email:'changed@example.test',current:'wrong'},operator,400);
+ await call('recovery-email',{email:'admin@example.test',current:password},operator,409);
+ await call('recovery-email',{email:'operator-new@example.test',current:password},operator);
+ const users=(await call('users',undefined,admin)).data.users;const user=users.find(u=>u.username==='recovery.operator');assert.equal(user.email,'operator-new@example.test');checks++;
+ const missing=(await call('password-forgot',{email:'missing@example.test'})).data;
+ const existing=(await call('password-forgot',{email:user.email})).data;assert.deepEqual(existing,missing);assert.equal(mail.length,1);assert.equal(mail[0].to,user.email);assert.equal(new URL(mail[0].url).origin,origin);checks+=4;
+ const firstToken=token();const stored=await database.prepare('SELECT * FROM user_recovery WHERE user_id=?').bind(user.id).first();assert.notEqual(stored.token_hash,firstToken);assert.match(stored.token_hash,/^[a-f0-9]{64}$/);assert.ok(Date.parse(stored.expires_at)>Date.now());checks+=3;
+ await call('password-reset',{token:firstToken,password:'short'},undefined,400);
+ for(let i=0;i<5;i++)await call('login',{username:user.username,password:'incorrect'},undefined,401);await call('login',{username:user.username,password:'incorrect'},undefined,429);
+ await call('password-reset',{token:firstToken,password:newPassword});
+ await call('password-reset',{token:firstToken,password:crypto.randomUUID()},undefined,400);
+ await call('data',undefined,operator,401);await call('data',undefined,admin);
+ await call('login',{username:user.username,password},undefined,401);
+ const recovered=(await call('login',{username:user.username,password:newPassword})).cookie;
+ const logs=(await call('logs?kind=password',undefined,admin)).data.events;assert.equal(logs.filter(e=>e.detail.includes('Senha redefinida')).length,1);assert.ok(!JSON.stringify(logs).includes(firstToken));checks+=2;
+ await clearLimits();await call('password-forgot',{email:user.email});const expired=token();await execute('UPDATE user_recovery SET expires_at=? WHERE user_id=?','2000-01-01T00:00:00.000Z',user.id);await call('password-reset',{token:expired,password},undefined,400);
+ await call('password-forgot',{email:user.email});const old=token();await call('password-forgot',{email:user.email});await call('password-reset',{token:old,password},undefined,400);const concurrentToken=token();
+ const requests=await Promise.all([password,crypto.randomUUID()].map(value=>createHandler(database,options())(new Request(origin+'/api/password-reset',{method:'POST',headers:{'Content-Type':'application/json','X-App-Request':'sentinela',Origin:origin},body:JSON.stringify({token:concurrentToken,password:value})}))));assert.deepEqual(requests.map(r=>r.status).sort(),[200,400]);checks++;
+ const latest=(await call('logs?kind=password',undefined,admin)).data.events;assert.equal(latest.filter(e=>e.detail.includes('Senha redefinida')).length,2);checks++;
+ await clearLimits();await call('password-forgot',{email:user.email});const emailToken=token();await call('users',{...user,email:'updated@example.test',active:true},admin);await call('password-reset',{token:emailToken,password},undefined,400);
+ await call('password-forgot',{email:'updated@example.test'});const disabledToken=token();await call('users',{...user,email:'updated@example.test',active:false},admin);await call('password-reset',{token:disabledToken,password},undefined,400);const before=mail.length;assert.deepEqual((await call('password-forgot',{email:'updated@example.test'})).data,missing);assert.equal(mail.length,before);checks+=2;
+ await clearLimits();await call('password-forgot',{email:'admin@example.test'});const changeToken=token();await call('password',{current:password,password:newPassword},admin);await call('password-reset',{token:changeToken,password},undefined,400);
+ await clearLimits();deliveryFails=true;const delivered=mail.length;assert.deepEqual((await call('password-forgot',{email:'admin@example.test'})).data,missing);assert.equal(mail.length,delivered);const adminContact=await database.prepare('SELECT * FROM user_recovery WHERE email=?').bind('admin@example.test').first();assert.equal(adminContact.token_hash,null);checks+=3;deliveryFails=false;
+ await clearLimits();for(let i=0;i<3;i++)await call('password-forgot',{email:'not-registered@example.test'});await call('password-forgot',{email:'not-registered@example.test'},undefined,429);
+ await clearLimits();for(let i=0;i<20;i++)await call('password-forgot',{email:'missing-'+i+'@example.test'});await call('password-forgot',{email:'another@example.test'},undefined,429);
+ await clearLimits();await call('password-reset',{token:'invalid',password},undefined,400);await call('password-forgot',{email:'admin@example.test'},undefined,403,{Origin:'https://other.example'});
+ const unavailable=await createHandler(database)(new Request(origin+'/api/password-forgot',{method:'POST',headers:{'Content-Type':'application/json','X-App-Request':'sentinela',Origin:origin},body:JSON.stringify({email:'admin@example.test'})}));assert.equal(unavailable.status,503);checks++;
+ console.log(checks+' password recovery checks passed: private responses, hashed expiring tokens, single use, race protection, session revocation, email changes, disabled users, audit, throttling and CSRF.');
+}
